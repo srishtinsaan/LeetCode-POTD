@@ -35,21 +35,33 @@ class Solution {
 
         n = nums1.length;
         m = nums2.length;
+
+        int dp[][] = new int[n+1][m+1];
+
+        for(int[] row : dp){
+            Arrays.fill(row, -1);
+        }
+
+        return solve(nums1, nums2, 0, 0, dp);
+
         
-        return solve(nums1, nums2, 0, 0);
     }
 
-    public int solve(int[] nums1, int[] nums2, int i, int j){
+    public int solve(int[] nums1, int[] nums2, int i, int j, int dp[][]){
 
         if(i >= n || j >= m){
             return -1000000000;
         }
-        int pd = nums1[i]*nums2[j];
-        int takej = solve(nums1, nums2, i, j+1);
-        int takei = solve(nums1, nums2, i+1, j);
-        int takeboth = nums1[i]*nums2[j] + solve(nums1, nums2, i+1, j+1);
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
 
-        return Math.max(Math.max(takej, takei), Math.max(takeboth, pd));
+        int pd = nums1[i]*nums2[j];
+        int takej = solve(nums1, nums2, i, j+1, dp);
+        int takei = solve(nums1, nums2, i+1, j, dp);
+        int takeboth = nums1[i]*nums2[j] + solve(nums1, nums2, i+1, j+1, dp);
+
+        return dp[n][m] = Math.max(Math.max(takej, takei), Math.max(takeboth, pd));
     }
     
 }
